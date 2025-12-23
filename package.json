@@ -1,0 +1,26 @@
+{
+  "name": "expressintelligenceserver",
+  "version": "1.0.0",
+  "description": "\"# ExpressIntelligenceServer\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benny1612/ExpressIntelligenceServer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/benny1612/ExpressIntelligenceServer/issues"
+  },
+  "homepage": "https://github.com/benny1612/ExpressIntelligenceServer#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11"
+  }
+}
