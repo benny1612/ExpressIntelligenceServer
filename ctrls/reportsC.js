@@ -1,4 +1,4 @@
-import { readData} from "../dataFunc.js";
+import { readData } from "../dataFunc.js";
 import fs from "fs/promises";
 
 const allreports = async (req, res) => {
@@ -26,39 +26,13 @@ const reportById = async (req, res) => {
       res.json("report not found");
     }
   } catch {
-    (err)
+    err;
   }
   {
     console.error(err);
     res.status(500).json({ err });
   }
 };
-// const addReport = async (req, res) => {
-//   const { content, agentId } = req.body;
-//   try {
-//     const agentsDb = await readData("agents");
-//     const reportsDB=await readData("reports");
-//     const findAgentID=agentsDb.findIndex((item) => item.id === parseInt(agentId))
-//     if (findAgentID!=-1){
-//     const maxId = Math.max(...reportsDB.map((o) => o.id));
-
-//     const newReport = { id: maxId + 1, data: new Date().toISOString(), content,agentId};
-//     reportsDB.push(newReport);
-//     const myText = JSON.stringify(newReport);
-//     await fs.writeFile("./data/reports.json", myText);
-//     const addReportsCount=agentsDb[findAgentID]["reportsCount"]+=1
-//     await fs.writeFile("./data/agents.json", addReportsCount);
-
-//     res.json( newReport )}
-//   } catch{
-//     (err)
-//   }
-//   {
-//     console.error(err)
-//     res.status(500).json( {err});
-//   }
-// }
-
 
 const addReport = async (req, res) => {
   const { content, agentId } = req.body;
@@ -83,7 +57,7 @@ const addReport = async (req, res) => {
       id: maxId + 1,
       date: new Date().toISOString(),
       content,
-      agentId
+      agentId,
     };
 
     reportsDB.push(newReport);
@@ -93,42 +67,43 @@ const addReport = async (req, res) => {
     await fs.writeFile("./data/agents.json", JSON.stringify(agentsDb));
 
     res.json(newReport);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
   }
 };
-const updataReportId = async(req,res)=>{
-    res.json("Changing a report ID is not possible.")
-}
+const updataReportId = async (req, res) => {
+  res.json("Changing a report ID is not possible.");
+};
 const deletereport = async (req, res) => {
-  try{
+  try {
     const reportsDB = await readData("reports");
-    const agentsDB= await readData("agents")
-  const id = req.params.id;
-  const findReport = reportsDB.findIndex((report) => report.id == id);
-  if(findReport!=-1){
-    reportsDB.splice(findReport, 1)
-    const updateReport = JSON.stringify(reportsDB);
-          await fs.writeFile("./data/report.json", updateReport);
-    const agentId=reportsDB[findReport]["agentId"]
-    const findAgent=agentsDB.findIndex((agent)=>agent.id=agentId)
-    const reducingReports = agentsDB[findAgent]["reportsCount"]
-    if (reducingReports>0){agentsDB[findAgent]["reportsCount"]-=1}
-    else{res.json("reports count = 0")}
-    const updataReportCont=JSON.stringify(agentsDB);
-    await fs.writeFile("./data/agents.json", updataReportCont);
+    const agentsDB = await readData("agents");
+    const id = req.params.id;
+    const findReport = reportsDB.findIndex((report) => report.id == id);
+    if (findReport != -1) {
+      reportsDB.splice(findReport, 1);
+      const updateReport = JSON.stringify(reportsDB);
+      await fs.writeFile("./data/report.json", updateReport);
+      const agentId = reportsDB[findReport]["agentId"];
+      const findAgent = agentsDB.findIndex((agent) => (agent.id = agentId));
+      const reducingReports = agentsDB[findAgent]["reportsCount"];
+      if (reducingReports > 0) {
+        agentsDB[findAgent]["reportsCount"] -= 1;
+      } else {
+        res.json("reports count = 0");
+      }
+      const updataReportCont = JSON.stringify(agentsDB);
+      await fs.writeFile("./data/agents.json", updataReportCont);
 
-          res.json({ deleted: true });
-          
-
-  }else{res.json("report not found")}
-}catch(err){console.error(err)
-    res.json(err)
-}
-
+      res.json({ deleted: true });
+    } else {
+      res.json("report not found");
+    }
+  } catch (err) {
+    console.error(err);
+    res.json(err);
+  }
 };
 
-
-export{allreports,reportById,addReport,updataReportId,deletereport}
+export { allreports, reportById, addReport, updataReportId, deletereport };
