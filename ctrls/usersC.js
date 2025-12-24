@@ -1,4 +1,4 @@
-import { readData} from "../dataFunc.js";
+import { readData } from "../dataFunc.js";
 import fs from "fs/promises";
 
 const allUsers = async (req, res) => {
@@ -47,20 +47,21 @@ const updataUser = async (req, res) => {
   }
 };
 const deleteUser = async (req, res) => {
-  try{
+  try {
     const js_File = await readData("users");
-  const name = req.params.username;
-  const findUser = js_File.findIndex((user) => user.name == name);
-  if(findUser!=-1){
-    js_File.splice(findUser, 1)
-    const myText = JSON.stringify(js_File);
-          await fs.writeFile("./data/users.json", myText);
-          res.json({ deleted: true });
-          
-
-  }else{res.json("user not found")}
-}catch(err){console.error(err)
-    res.json(err)
-}
-}
-export { addUser, allUsers, updataUser,deleteUser};
+    const name = req.params.username;
+    const findUser = js_File.findIndex((user) => user.name == name);
+    if (findUser != -1) {
+      js_File.splice(findUser, 1);
+      const myText = JSON.stringify(js_File);
+      await fs.writeFile("./data/users.json", myText);
+      res.json({ deleted: true });
+    } else {
+      res.json("user not found");
+    }
+  } catch (err) {
+    console.error(err);
+    res.json(err);
+  }
+};
+export { addUser, allUsers, updataUser, deleteUser };
